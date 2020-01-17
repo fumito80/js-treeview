@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  <div id="root"></div>
+  <script src="../dist/js-treeview.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', _ => {
+      const root = document.getElementById('root');
+      const treeview = new Treeview(root, { fontPxSize: 16 });
+      treeview.reset([
+        { name: '親ノード 1' },
+        {
+          name: '親ノード 2',
+          children: [
+            { name: '子ノード 2-1' },
+            { name: '子ノード 2-2' },
+            {
+              name: '子ノード 2-3',
+              children: [
+                { name: '孫ノード 2-3-1' }
+              ],
+            },
+          ]
+        },
+        {
+          name: '親ノード 3',
+          children: [
+            {
+              name: '子ノード 3-1',
+              children: [
+                { name: '孫ノード 3-1-1' },
+                { name: '孫ノード 3-1-1' },
+              ],
+            },
+            {
+              name: '子ノード 3-2',
+              children: [
+                { name: '孫ノード 3-2-1' }
+              ],
+            },
+          ]
+        },
+      ]);
+    });
+  </script>
+</body>
+</html>

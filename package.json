@@ -1,0 +1,23 @@
+{
+  "name": "js-treeview",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "tsc": "tsc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/takadaZ/js-treeview.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/takadaZ/js-treeview/issues"
+  },
+  "homepage": "https://github.com/takadaZ/js-treeview#readme",
+  "devDependencies": {
+    "typescript": "^3.7.5"
+  }
+}
