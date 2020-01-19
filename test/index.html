@@ -6,13 +6,13 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Document</title>
 </head>
-<body>
+<body style="font-size: 1.1rem;">
   <div id="root"></div>
   <script src="../dist/js-treeview.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', _ => {
       const root = document.getElementById('root');
-      const treeview = new Treeview(root, { fontPxSize: 16 });
+      const treeview = new Treeview(root);
       treeview.reset([
         { name: '親ノード 1' },
         {
@@ -30,6 +30,7 @@
         },
         {
           name: '親ノード 3',
+          open: true,
           children: [
             {
               name: '子ノード 3-1',
@@ -37,6 +38,8 @@
                 { name: '孫ノード 3-1-1' },
                 { name: '孫ノード 3-1-1' },
               ],
+              open: true,
+              active: true,
             },
             {
               name: '子ノード 3-2',
