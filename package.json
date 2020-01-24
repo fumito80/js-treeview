@@ -19,5 +19,8 @@
   "homepage": "https://github.com/takadaZ/js-treeview#readme",
   "devDependencies": {
     "typescript": "^3.7.5"
+  },
+  "dependencies": {
+    "font-awesome": "^4.7.0"
   }
 }
