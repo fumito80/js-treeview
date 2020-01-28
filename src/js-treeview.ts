@@ -144,12 +144,19 @@ class Treeview implements ITreeview {
       </style>
     `;
   }
-  private endEdit(e: FocusEvent) {
-    const target = e.target as Element;
+  private endEdit(e: Event) {
+    const target = e.target as HTMLElement;
     if (!target) {
       return;
     }
     target.removeAttribute('contenteditable');
+    target.removeEventListener('keydown', this.checkEnterKey);
+  }
+  private checkEnterKey(e: KeyboardEvent) {
+    const target = e.target as HTMLElement;
+    if (e.key === 'Enter' && target) {
+      target.blur();
+    }
   }
   private setJS(shadowRoot: ShadowRoot) {
     shadowRoot.addEventListener('click', e => {
@@ -158,7 +165,8 @@ class Treeview implements ITreeview {
         const radio = target.previousElementSibling as HTMLInputElement;
         if (radio.checked) {
           target.setAttribute('contenteditable', 'true');
-          target.addEventListener('blur', this.endEdit, { once: true });
+          target.addEventListener('blur', this.endEdit.bind(this), { once: true });
+          target.addEventListener('keydown', this.checkEnterKey);
           target.focus();
           e.preventDefault();
         }
