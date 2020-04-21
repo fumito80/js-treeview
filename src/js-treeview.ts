@@ -67,10 +67,10 @@ class Treeview implements ITreeview {
     const hasChildren = children.length === 0 ? "" : "hasChildren";
     return `
       <li>
-        <input type="checkbox" class="${hasChildren}" ${open ? 'checked' : ''} tabindex="-1">
+        <input type="checkbox" class="${hasChildren}" ${open ? 'checked' : ''}>
         <label>
-          <input type="radio" name="selected" ${active ? 'checked' : ''} data-id="${id}" tabindex="-1">
-          <span contenteditable="false" tabindex="0">${name}</span>
+          <input type="radio" name="selected" ${active ? 'checked' : ''} data-id="${id}">
+          <div class="item-name">${name}</div>
         </label>
         <ul>${this.setNodes(children)}</ul>
       </li>
@@ -79,6 +79,14 @@ class Treeview implements ITreeview {
   private css({ fontSize, folderImageData }: Options) {
     return `
       <style>
+        fa {
+          display: inline-block;
+          font: normal normal normal 14px/1 FontAwesome;
+          font-size: inherit;
+          text-rendering: auto;
+          -webkit-font-smoothing: antialiased;
+          -moz-osx-font-smoothing: grayscale;
+        }
         ul {
           font-size: ${fontSize};
           transition: all 5.2s 0s ease;
@@ -126,31 +134,41 @@ class Treeview implements ITreeview {
         input[type="radio"] {
           position: absolute;
         }
-        input[type="radio"] + span {
-          display: inline-block;
-          width: 100%;
+        input[type="radio"] + div {
           margin-left: 5px;
           padding: 2px 4px;
         }
-        input[type="radio"]:checked + span {
+        input[type="radio"]:checked + div {
           background-color: rgba(0, 0, 0, .05);
-        }
-        [contenteditable] {
-          user-select: text;
-          -webkit-user-select: text;
-          -moz-user-select: text;
-          -ms-user-select: text;
         }
       </style>
     `;
   }
+  private endEdit(e: Event) {
+    const target = e.target as HTMLElement;
+    if (!target) {
+      return;
+    }
+    target.removeAttribute('contenteditable');
+    target.removeEventListener('keydown', this.checkEnterKey);
+  }
+  private checkEnterKey(e: KeyboardEvent) {
+    const target = e.target as HTMLElement;
+    if (e.key === 'Enter' && target) {
+      target.blur();
+    }
+  }
   private setJS(shadowRoot: ShadowRoot) {
     shadowRoot.addEventListener('click', e => {
       const target = e.target as HTMLElement;
-      if (target.localName === 'span') {
+      if (target.classList.contains('item-name')) {
         const radio = target.previousElementSibling as HTMLInputElement;
         if (radio.checked) {
-          radio.checked = false;
+          target.setAttribute('contenteditable', 'true');
+          target.addEventListener('blur', this.endEdit.bind(this), { once: true });
+          target.addEventListener('keydown', this.checkEnterKey);
+          target.focus();
+          e.preventDefault();
         }
       }
     });
